@@ -5,24 +5,32 @@ on:
     - cron: '*/6 * * * *'
   workflow_dispatch: 
 
+# This forces GitHub to use the new Node version and silences the warning
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   snipe_seats:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4 # Updated to v4 for Node 20/24 support
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v5 # Updated to v5 for Node 24 support
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
       - name: Install dependencies
         run: pip install requests beautifulsoup4
 
-      # DEBUG STEP: This lets us see exactly what files are present if things fail
-      - name: List files for debugging
-        run: ls -R
+      # HEAVY DEBUGGING: This will tell us exactly where you put the file
+      - name: Print Directory Structure
+        run: |
+          pwd
+          ls -la
+          echo "--- Subfolders ---"
+          ls -R
 
       - name: Run Targeted Sniper
         env:
@@ -30,6 +38,7 @@ jobs:
           WEBHOOK_FAIL: ${{ secrets.WEBHOOK_FAIL }}
           WEBHOOK_STATUS_REPORT: ${{ secrets.WEBHOOK_STATUS_REPORT }}
           WEBHOOK_SEAT_STALKER: ${{ secrets.WEBHOOK_SEAT_STALKER }}
+        # Updated to match the name you chose!
         run: python targeted_alerts.py
 
       - name: Commit and push updated state
