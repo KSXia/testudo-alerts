@@ -1,0 +1,23 @@
+{
+  "TERM": "202608",
+  "PINGS": {
+    "SEAT_DROP": "<@&1499095743024074883>",
+    "STATUS_REPORT": "<@&1499097068386648195>",
+    "FAIL_ALARM": "<@&1499097740578128054>"
+  },
+  "TARGETS": {
+    "STAT400": {
+      "sections": {
+        "0221": {"threshold": 10},
+        "0222": {"threshold": 15}
+      },
+      "combinations": [
+        {
+          "name": "0221 + 0222 Combo",
+          "sections": ["0221", "0222"],
+          "threshold": 15
+        }
+      ]
+    }
+  }
+}
