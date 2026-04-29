@@ -2,41 +2,39 @@ name: 6-Minute Targeted Sniper
 
 on:
   schedule:
-    # Runs every 6 minutes to stay within GitHub Free Tier limits for 1 week
     - cron: '*/6 * * * *'
-  workflow_dispatch: # Allows you to trigger the sniper manually for testing
+  workflow_dispatch: 
 
 jobs:
   snipe_seats:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4 # Updated to v4 for Node 20/24 support
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5 # Updated to v5 for Node 24 support
         with:
-          python-version: '3.10'
+          python-version: '3.11'
 
       - name: Install dependencies
         run: pip install requests beautifulsoup4
 
+      # DEBUG STEP: This lets us see exactly what files are present if things fail
+      - name: List files for debugging
+        run: ls -R
+
       - name: Run Targeted Sniper
         env:
-          # Mapping the GitHub Secrets to Python environment variables
           WEBHOOK_SUCCESS_FAIL: ${{ secrets.WEBHOOK_SUCCESS_FAIL }}
           WEBHOOK_FAIL: ${{ secrets.WEBHOOK_FAIL }}
           WEBHOOK_STATUS_REPORT: ${{ secrets.WEBHOOK_STATUS_REPORT }}
           WEBHOOK_SEAT_STALKER: ${{ secrets.WEBHOOK_SEAT_STALKER }}
-        run: python targeted_sniper.py
+        run: python targeted_alerts.py
 
       - name: Commit and push updated state
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          
-          # Tracks the config, the memory, and the log files
-          git add targets.json sniper_state.json sniper_log.txt
-          
-          # Only commit if changes exist, pull to avoid conflicts, then push
+          git add targets.json sniper_state.json sniper_log.txt targeted_alerts.py
           git diff --quiet && git diff --staged --quiet || (git commit -m "Update targeted sniper config and memory" && git pull --rebase origin main && git push)
