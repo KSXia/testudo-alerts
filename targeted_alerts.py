@@ -16,6 +16,7 @@ WEBHOOK_SEAT_STALKER = os.environ.get('WEBHOOK_SEAT_STALKER')
 # Discord Role IDs for Pings
 ROLE_PING = "<@&1499095743024074883>" # For critical seat drops
 STATUS_PING = "<@&1499097068386648195>" # For status reports
+FAIL_PING = "<@&1499097740578128054>" # For script crashes/failures
 
 # Target Configuration (Continuous logic removed for strict single-trigger)
 TARGETS = {
@@ -106,7 +107,6 @@ def run_sniper():
                     
                     # Triggers ONLY when crossing the threshold for the first time
                     if curr_seats <= threshold and prev_seats > threshold:
-                        # MOVED PING TO THE END
                         msg = f"🚨 **SEAT DROP!** {course_id} (Sec {sec_id}) hit **{curr_seats}** seats! (Threshold: {threshold})\n*(Retrieved at: {fetch_time})*\n{ROLE_PING}"
                         write_log(msg)
                         send_discord(WEBHOOK_SEAT_STALKER, msg)
@@ -127,7 +127,6 @@ def run_sniper():
                 status_lines.append(f"• **{combo_name} Total:** {curr_sum} seats")
                 
                 if curr_sum <= threshold and prev_sum > threshold:
-                    # MOVED PING TO THE END
                     msg = f"🚨 **COMBO DROP!** {combo_name} hit **{curr_sum}** total seats! (Threshold: {threshold})\n*(Retrieved at: {fetch_time})*\n{ROLE_PING}"
                     write_log(msg)
                     send_discord(WEBHOOK_SEAT_STALKER, msg)
@@ -146,13 +145,14 @@ def run_sniper():
     if run_success:
         base_msg = f"✅ Run Successful at {fetch_time}"
         send_discord(WEBHOOK_SUCCESS_FAIL, base_msg)
-        # ADDED STATUS PING TO THE END
         send_discord(WEBHOOK_STATUS_REPORT, f"{base_msg}\n\n**Current Status:**\n{report_body}\n\n{STATUS_PING}")
     else:
         base_msg = f"❌ Run Failed at {fetch_time}\n**Error:** {error_msg}"
         send_discord(WEBHOOK_SUCCESS_FAIL, base_msg)
-        send_discord(WEBHOOK_FAIL, base_msg)
-        # ADDED STATUS PING TO THE END
+        
+        # APPENDED FAIL PING ONLY TO THE FAIL CHANNEL MESSAGE
+        send_discord(WEBHOOK_FAIL, f"{base_msg}\n\n{FAIL_PING}")
+        
         send_discord(WEBHOOK_STATUS_REPORT, f"{base_msg}\n\n**Partial Status (before crash):**\n{report_body}\n\n{STATUS_PING}")
 
 if __name__ == "__main__":
