@@ -45,5 +45,9 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add targets.json sniper_state.json sniper_log.txt targeted_alerts.py
+          
+          # 'add -A' stages all modified or newly created files safely 
+          # without crashing if a specific file (like the log) is missing
+          git add -A
+          
           git diff --quiet && git diff --staged --quiet || (git commit -m "Update targeted sniper config and memory" && git pull --rebase origin main && git push)
