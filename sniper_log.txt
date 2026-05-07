@@ -4,3 +4,6 @@
 🚨 **SEAT DROP!** STAT400 (Sec 0222) hit **15** seats! (Threshold: 15)
 *(Retrieved at: 2026-05-04 17:00:22)*
 <@&1499095743024074883>
+🚨 **COMBO DROP!** 0221 + 0222 Combo hit **15** total seats! (Threshold: 15)
+*(Retrieved at: 2026-05-07 19:50:38)*
+<@&1499095743024074883>
