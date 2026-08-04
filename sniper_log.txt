@@ -128,3 +128,12 @@
 🚨 **COMBO DROP!** 0221 + 0222 Combo hit **0** total seats! (Threshold: 15)
 *(Retrieved at: 2026-08-02 19:54:45)*
 <@&1499095743024074883>
+🚨 **SEAT DROP!** STAT400 (Sec 0221) hit **4** seats! (Threshold: 10)
+*(Retrieved at: 2026-08-04 15:54:31)*
+<@&1499095743024074883>
+🚨 **SEAT DROP!** STAT400 (Sec 0222) hit **3** seats! (Threshold: 15)
+*(Retrieved at: 2026-08-04 15:54:31)*
+<@&1499095743024074883>
+🚨 **COMBO DROP!** 0221 + 0222 Combo hit **7** total seats! (Threshold: 15)
+*(Retrieved at: 2026-08-04 15:54:31)*
+<@&1499095743024074883>
